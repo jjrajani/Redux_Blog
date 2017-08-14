@@ -28,3 +28,13 @@ export function createPost(values, callback) {
     payload: request,
   }
 }
+
+export function deletePost(id, callback) {
+  const request = axios.delete(`${c.BLOG_URL}/posts/${id}${c.API_KEY}`)
+    .then(() => callback());
+
+  return {
+    type: c.DELETE_POST,
+    payload: request,
+  }
+}
