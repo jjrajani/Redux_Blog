@@ -1,5 +1,11 @@
-import fetchPosts from './fetch_posts';
+import {
+  fetchPosts,
+  fetchPost,
+  createPost
+} from './action_posts';
 
 export {
   fetchPosts,
+  fetchPost,
+  createPost,
 }

@@ -1,37 +1,50 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostsNew extends Component {
 
   renderField(field) {
+    const { meta: { touched, error }, label, input } = field;
+    const className=`form-group ${error && touched ? 'has-danger' : ''}`;
+
     return (
-      <div className='form-group'>
-        <label>{field.label}</label>
+      <div className={className}>
+        <label>{label}</label>
         <input
           className='form-control'
           type="text"
-          {...field.input}
+          {...input}
         />
+      <div className="text-help">
+          { touched ? error : '' }
+        </div>
       </div>
     );
   }
 
+  onSubmit(values) {
+    this.props.createPost(values, () => {
+      this.props.history.push('/')
+    });
+  }
+
   render() {
+    const { handleSubmit } = this.props;
+
     return (
       <div>
-        <div className="text-xs-right">
-          <Link className="btn btn-primary" to="/">List Posts</Link>
-        </div>
-        <form>
+        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
           <Field
-            label="Title"
+            label="Title for Post"
             name="title"
             component={this.renderField}
           />
           <Field
-            label="Tags"
-            name="tags"
+            label="Categories"
+            name="categories"
             component={this.renderField}
           />
           <Field
@@ -39,6 +52,8 @@ class PostsNew extends Component {
             name="content"
             component={this.renderField}
           />
+          <button type="submit" className="btn btn-primary">Submit</button>
+          <Link className="btn btn-danger" to="/">Cancel</Link>
         </form>
       </div>
     );
@@ -46,6 +61,20 @@ class PostsNew extends Component {
 
 }
 
+function validate(values) {
+  const errors = {};
+
+  if (!values.title)      errors.title      = "Enter a title!";
+  if (!values.categories) errors.categories = "Enter some categories!";
+  if (!values.content)    errors.content    = "Enter some content!";
+
+  /* If erros is empty, the form is fine to submit */
+  return errors;
+}
+
 export default reduxForm({
   form: 'PostsNewForm',
-})(PostsNew);
+  validate,
+})(
+  connect(null, { createPost })(PostsNew)
+);
