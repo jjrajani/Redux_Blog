@@ -1,6 +1,6 @@
 # ReduxSimpleStarter
 
-Interested in learning [Redux](https://www.udemy.com/react-redux/)?
+Interested in learning [Demo](http://humdrum-redux-blog.surge.sh/)
 
 ### Getting Started
 
