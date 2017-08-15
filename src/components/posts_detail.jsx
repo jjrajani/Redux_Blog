@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchPost, deletePost } from '../actions';
 
 class PostDetail extends Component {
   componentDidMount() {
-    const id = this.props.match.params.id;
+    const { id } = this.props.match.params;
     this.props.fetchPost(id);
   }
 
-  deletePost = (e) => {
-    const id = this.props.match.params.id;
+  onDeleteClick(e) {
+    const { id } = this.props.match.params;
     this.props.deletePost(id, () => {
       this.props.history.push('/');
     });
@@ -20,10 +21,16 @@ class PostDetail extends Component {
     if (!post) return <div>Loading...</div>
     return (
       <div>
+        <Link className="btn btn-primary" to="/">Back to List</Link>
+        <button
+          className="btn btn-danger pull-xs-right"
+          onClick={this.onDeleteClick.bind(this)}
+        >
+          Delete Post
+        </button>
         <h3>{post.title}</h3>
         <h6>Categories: {post.categories}</h6>
         <p>{post.content}</p>
-        <p onClick={this.deletePost}>Delete</p>
       </div>
     );
   }

@@ -35,6 +35,6 @@ export function deletePost(id, callback) {
 
   return {
     type: c.DELETE_POST,
-    payload: request,
+    payload: id,
   }
 }

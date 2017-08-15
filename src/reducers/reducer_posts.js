@@ -4,18 +4,21 @@ import _ from 'lodash';
 
 export default function(state = {}, action) {
   switch (action.type) {
+    case c.FETCH_POSTS:
+      return _.mapKeys(action.payload.data, 'id');
     case c.FETCH_POST:
       return {
         ...state,
         // [creates a new key]
         [action.payload.data.id]: action.payload.data
       };
-    case c.FETCH_POSTS:
-      return _.mapKeys(action.payload.data, 'id');
     case c.CREATE_POST:
-      return state;
+      return {
+        [action.payload.data.id]: action.payload.data,
+        ...state
+      };
     case c.DELETE_POST:
-      return state;
+      return _.omit(state, action.payload);
     default:
       return state;
   }
